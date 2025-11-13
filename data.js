@@ -2,33 +2,23 @@ let products = [
     { id: 1, name: "Chocolat Chaud", price: 0.40, stock: 50, minStock: 10, category: "Boisson", image: "image/benco.jpg" },
     { id: 2, name: "Café", price: 1.00, stock: 50, minStock: 10, category: "Boisson", image: "image/café.jpg" },
     { id: 3, name: "Café au lait", price: 1.00, stock: 30, minStock: 15, category: "Boisson", image: "image/caféaulait.jpg" },
-    { id: 4, name: "Coca-Cola", price: 1.00, stock: 45, minStock: 20, category: "Boisson", image: "image/cocacola.jpg" },
-    { id: 5, name: "Coca-Cola Cherry", price: 1.00, stock: 25, minStock: 10, category: "Boisson", image: "image/cocacolacherry.jpg" },
-    { id: 6, name: "Oasis Pomme-Cassis", price: 1.00, stock: 35, minStock: 15, category: "Boisson", image: "image/oasispommecasis.jpg" },
-    { id: 7, name: "Fanta", price: 1.00, stock: 30, minStock: 15, category: "Boisson", image: "image/orange.jpg" },
-    { id: 8, name: "Lipton", price: 1.00, stock: 45, minStock: 20, category: "Boisson", image: "image/lipton.jpg" },
-    { id: 9, name: "Sirop", price: 0.50, stock: 25, minStock: 10, category: "Boisson", image: "image/sirop.jpg" },
-    { id: 10, name: "Bouteille Sirop", price: 0.30, stock: 35, minStock: 15, category: "Boisson", image: "image/siropbouteille.jpg" },
-    { id: 11, name: "Diabolo", price: 1.50, stock: 30, minStock: 15, category: "Boisson", image: "image/diabolo.jpg" },
-    { id: 12, name: "Thé", price: 2.00, stock: 45, minStock: 20, category: "Boisson", image: "image/thé.jpg" },
-    { id: 13, name: "Jus de fruit", price: 2.00, stock: 45, minStock: 20, category: "Boisson", image: "image/jusfruit.jpg" },
-    { id: 14, name: "Jus de Pomme", price: 2.00, stock: 45, minStock: 20, category: "Boisson", image: "image/jusdepomme.jpg" },
-    { id: 15, name: "Chips BBQ", price: 3.50, stock: 50, minStock: 10, category: "Salé", image: "image/chipsbbq.jpg" },
-    { id: 16, name: "Chips Nature", price: 1.50, stock: 30, minStock: 15, category: "Salé", image: "image/chipsnature.jpg" },
-    { id: 17, name: "Chips Poulet", price: 2.00, stock: 45, minStock: 20, category: "Salé", image: "image/chipspouletroti.jpg" },
-    { id: 18, name: "Saucisson", price: 2.50, stock: 25, minStock: 10, category: "Salé", image: "image/saucisson.jpg" },
-    { id: 19, name: "Pain au Chocolat", price: 1.50, stock: 35, minStock: 15, category: "Sucré", image: "image/painchocolat.jpg" },
-    { id: 20, name: "Croissant", price: 1.50, stock: 30, minStock: 15, category: "Sucré", image: "image/croissant.jpg" },
-    { id: 21, name: "Lion", price: 2.00, stock: 45, minStock: 20, category: "Sucré", image: "image/lion.jpg" },
-    { id: 22, name: "KitKat", price: 2.50, stock: 25, minStock: 10, category: "Sucré", image: "image/kitkat.jpg" },
-    { id: 23, name: "Twix", price: 1.50, stock: 35, minStock: 15, category: "Sucré", image: "image/twix.jpg" },
-    { id: 24, name: "Oréo", price: 1.50, stock: 30, minStock: 15, category: "Sucré", image: "image/oréo.jpg" },
-    { id: 25, name: "Petit écolier", price: 2.00, stock: 45, minStock: 20, category: "Sucré", image: "image/petitécolier.jpg" },
-    { id: 26, name: "M&M's", price: 2.00, stock: 45, minStock: 20, category: "Sucré", image: "image/M&Ms.jpg" },
-    { id: 27, name: "Bonbon", price: 2.50, stock: 25, minStock: 10, category: "Sucré", image: "image/bonbons.jpg" },
-    { id: 28, name: "Crêpe", price: 1.50, stock: 35, minStock: 15, category: "Sucré", image: "image/crepe.jpg" },
-    { id: 29, name: "Kinder Bueno", price: 1.50, stock: 30, minStock: 15, category: "Sucré", image: "image/kinderbueno.jpg" },
-    { id: 30, name: "Compote", price: 2.00, stock: 45, minStock: 20, category: "Sucré", image: "image/compote.jpg" }
+    { id: 4, name: "Coca-Cola", price: 1.00, stock: 40, minStock: 20, category: "Boisson", image: "image/cocacola.jpg" },
+    { id: 5, name: "Oasis Pomme-Cassis", price: 1.00, stock: 24, minStock: 15, category: "Boisson", image: "image/oasispommecasis.jpg" },
+    { id: 6, name: "Lipton", price: 1.00, stock: 24, minStock: 20, category: "Boisson", image: "image/lipton.jpg" },
+    { id: 7, name: "Sirop", price: 0.50, stock: 25, minStock: 10, category: "Boisson", image: "image/sirop.jpg" },
+    { id: 8, name: "Bouteille Sirop", price: 0.30, stock: 35, minStock: 15, category: "Boisson", image: "image/siropbouteille.jpg" },
+    { id: 9, name: "Diabolo", price: 1.50, stock: 30, minStock: 15, category: "Boisson", image: "image/diabolo.jpg" },
+    { id: 10, name: "Thé", price: 2.00, stock: 75, minStock: 20, category: "Boisson", image: "image/thé.jpg" },
+    { id: 11, name: "Chips BBQ", price: 3.50, stock: 12, minStock: 10, category: "Salé", image: "image/chipsbbq.jpg" },
+    { id: 12, name: "Chips Nature", price: 1.50, stock: 24, minStock: 15, category: "Salé", image: "image/chipsnature.jpg" },
+    { id: 13, name: "Chips Poulet", price: 2.00, stock: 12, minStock: 20, category: "Salé", image: "image/chipspouletroti.jpg" },
+    { id: 14, name: "Saucisson", price: 2.50, stock: 4, minStock: 10, category: "Salé", image: "image/saucisson.jpg" },
+    { id: 15, name: "Croissant", price: 1.50, stock: 32, minStock: 15, category: "Sucré", image: "image/croissant.jpg" },
+    { id: 16, name: "Twix", price: 1.50, stock: 40, minStock: 15, category: "Sucré", image: "image/twix.jpg" },
+    { id: 17, name: "Oréo", price: 1.50, stock: 24, minStock: 15, category: "Sucré", image: "image/oréo.jpg" },
+    { id: 18, name: "M&M's", price: 2.00, stock: 20, minStock: 20, category: "Sucré", image: "image/M&Ms.jpg" },
+    { id: 19, name: "Bonbon", price: 2.50, stock: 32, minStock: 10, category: "Sucré", image: "image/bonbons.jpg" },
+    { id: 20, name: "Crêpe", price: 1.50, stock: 45, minStock: 15, category: "Sucré", image: "image/crepe.jpg" },
 ];
 
 let cart = [];
@@ -392,6 +382,234 @@ function renderRevenueChart(salesData) {
         ctx.fillText(day.substring(0, 5), 0, 0);
         ctx.restore();
     });
-}
+    }
+                hourlyData.forEach((value, hour) => {
+                if (value > 0) {
+                    const x = padding + (hour / 23) * chartWidth;
+                    const y = canvas.height - padding - (value / maxValue) * chartHeight;
+                    
+                    ctx.beginPath();
+                    ctx.fillStyle = 'white';
+                    ctx.strokeStyle = '#3b82f6';
+                    ctx.lineWidth = 3;
+                    ctx.arc(x, y, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                    
+                    if (value > maxValue * 0.7) {
+                        ctx.fillStyle = '#0f172a';
+                        ctx.font = 'bold 10px Outfit';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(value.toFixed(0) + '€', x, y - 12);
+                    }
+                }
+            });
+            
+            ctx.fillStyle = '#64748b';
+            ctx.font = '11px Outfit';
+            ctx.textAlign = 'center';
+            for (let h = 0; h < 24; h += 2) {
+                const x = padding + (h / 23) * chartWidth;
+                ctx.fillText(h + 'h', x, canvas.height - 10);
+            }
+            
+            ctx.textAlign = 'right';
+            ctx.font = '10px Outfit';
+            for (let i = 0; i <= 4; i++) {
+                const y = padding + (chartHeight / 4) * i;
+                const value = maxValue * (1 - i / 4);
+                ctx.fillText(value.toFixed(0) + '€', padding - 5, y + 4);
+            }
+        
+    
+    function renderWeekdayChart(salesData) {
+            const canvas = document.getElementById('weekdayChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            
+            const weekdays = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+            const weekdayData = new Array(7).fill(0);
+            const weekdayCounts = new Array(7).fill(0);
+            
+            salesData.forEach(s => {
+                const day = new Date(s.date).getDay();
+                weekdayData[day] += s.total;
+                weekdayCounts[day]++;
+            });
+            
+            const avgData = weekdayData.map((total, i) => weekdayCounts[i] > 0 ? total / weekdayCounts[i] : 0);
+            
+            canvas.height = 250;
+            canvas.width = canvas.offsetWidth;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const padding = 50;
+            const chartWidth = canvas.width - padding * 2;
+            const chartHeight = canvas.height - padding * 2;
+            const maxValue = Math.max(...avgData, 1);
+            const barWidth = Math.min(chartWidth / 7 - 10, 80);
+            const spacing = chartWidth / 7;
+            
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 4; i++) {
+                const y = padding + (chartHeight / 4) * i;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(canvas.width - padding, y);
+                ctx.stroke();
+                
+                const value = maxValue * (1 - i / 4);
+                ctx.fillStyle = '#64748b';
+                ctx.font = '11px Outfit';
+                ctx.textAlign = 'right';
+                ctx.fillText(value.toFixed(0) + '€', padding - 5, y + 4);
+            }
+            
+            avgData.forEach((value, index) => {
+                const barHeight = (value / maxValue) * chartHeight;
+                const x = padding + index * spacing + (spacing - barWidth) / 2;
+                const y = canvas.height - padding - barHeight;
+                
+                let color1, color2;
+                if (index === 0 || index === 6) {
+                    color1 = '#8b5cf6';
+                    color2 = '#6d28d9';
+                } else {
+                    color1 = '#3b82f6';
+                    color2 = '#1e40af';
+                }
+                
+                const gradient = ctx.createLinearGradient(0, y, 0, canvas.height - padding);
+                gradient.addColorStop(0, color1);
+                gradient.addColorStop(1, color2);
+                
+                ctx.shadowColor = `rgba(59, 130, 246, 0.3)`;
+                ctx.shadowBlur = 8;
+                ctx.shadowOffsetY = 4;
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, barWidth, barHeight);
+                
+                ctx.shadowColor = 'transparent';
+                
+                if (value > 0) {
+                    ctx.fillStyle = '#0f172a';
+                    ctx.font = 'bold 11px Outfit';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(value.toFixed(0) + '€', x + barWidth / 2, y - 8);
+                }
+                
+                if (weekdayCounts[index] > 0) {
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '9px Outfit';
+                    ctx.fillText(`(${weekdayCounts[index]} j)`, x + barWidth / 2, y - 20);
+                }
+            });
+            
+            ctx.fillStyle = '#475569';
+            ctx.font = '11px Outfit';
+            ctx.textAlign = 'center';
+            weekdays.forEach((day, index) => {
+                const x = padding + index * spacing + spacing / 2;
+                ctx.fillText(day.substring(0, 3), x, canvas.height - 10);
+            });
+        }
+    
+        function renderCourses() {
+            const lowStock = products.filter(p => p.stock <= p.minStock && p.name);
+            
+            if (lowStock.length === 0) {
+                document.getElementById('shoppingList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-emoji">✅</div>
+                        <div style="font-size: 1.25rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">Stock suffisant</div>
+                        <div>Tous les produits sont bien approvisionnés</div>
+                    </div>
+                `;
+            } else {
+                document.getElementById('shoppingList').innerHTML = lowStock.map(p => {
+                    const imageContent = p.image && p.image.trim() !== '' && p.image !== 'image/' 
+                        ? `<img src="${p.image}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.innerHTML='<span style=\\'font-size: 1.5rem;\\'>📦</span>'">` 
+                        : '<span style="font-size: 1.5rem;">📦</span>';
+                    
+                    return `
+                        <div class="alert-box alert-warning" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 50px; height: 50px; border-radius: 10px; overflow: hidden; background: #f1f5f9; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    ${imageContent}
+                                </div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 1rem;">${p.name}</div>
+                                    <div style="font-size: 0.85rem;">${p.category}</div>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: 700; color: #dc2626; font-size: 0.9rem;">Stock: ${p.stock}</div>
+                                <div style="font-size: 0.85rem;">Min: ${p.minStock}</div>
+                                <div style="font-weight: 700; color: #1e40af; margin-top: 0.25rem; font-size: 0.9rem;">À commander: ${Math.max(p.minStock * 2 - p.stock, 0)}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function exportData() {
+            const data = { products, sales, exportDate: new Date().toISOString() };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `mdl-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showNotification('💾 Données exportées avec succès !', 'success');
+        }
+            function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = async (event) => {
+                        try {
+                            const data = JSON.parse(event.target.result);
+                            if (data.products && data.sales) {
+                                products = data.products;
+                                sales = data.sales;
+                                await save();
+                                renderProducts();
+                                renderCart();
+                                showNotification('✅ Données importées avec succès !', 'success');
+                            }
+                        } catch (error) {
+                            showNotification('❌ Erreur lors de l\'import du fichier', 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert('Impossible de passer en plein écran');
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadData();
+        });
+
 
 // ... (le reste des fonctions renderHourlyChart, renderWeekdayChart, renderCourses, etc.)
