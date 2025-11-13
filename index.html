@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1e3a8a">
+    <title>Gestion MDL - Henri Brisson</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%231e3a8a'/><text x='50' y='60' font-size='35' text-anchor='middle' fill='white' font-weight='bold'>HB</text></svg>">
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="data.js"></script>
+    
+    <style>
+        </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">
+                    <div class="logo-text">HB</div>
+                    <div class="logo-year">1887</div>
+                </div>
+                <div class="header-title">
+                    <h1>Gestion MDL</h1>
+                    <p>Lycée Henri Brisson • Vierzon</p>
+                </div>
+            </div>
+            <div class="header-buttons">
+                <button class="export-btn" onclick="exportData()">💾</button>
+                <button class="export-btn" onclick="importData()">📂</button>
+                <button class="export-btn" onclick="toggleFullscreen()">⛶</button>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <button class="nav-btn active" onclick="switchTab(event, 'caisse')">🛒 Caisse</button>
+            <button class="nav-btn" onclick="switchTab(event, 'stock')">📦 Stock</button>
+            <button class="nav-btn" onclick="switchTab(event, 'stats')">📊 Stats</button>
+            <button class="nav-btn" onclick="switchTab(event, 'courses')">🛍️ Courses</button>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="container">
+        <!-- CAISSE -->
+        <div id="tab-caisse" class="content-section active">
+            <div class="caisse-grid">
+                <div>
+                    <div class="card">
+                        <div class="card-body" style="padding: 1rem;">
+                            <input type="text" class="search-input" placeholder="🔍 Rechercher un produit..." 
+                                id="searchProduct" oninput="renderProducts()">
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Produits</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="products-grid" id="productsList"></div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Panier</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="cart-items" id="cartItems"></div>
+                            <div class="cart-total">
+                                <span class="cart-total-label">Total</span>
+                                <span class="cart-total-amount" id="cartTotal">0.00 €</span>
+                            </div>
+                            <button class="validate-btn" onclick="validateSale()">✓ Valider la vente</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STOCK -->
+        <div id="tab-stock" class="content-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Stock</h2>
+                    <button class="btn btn-primary" onclick="addProduct()">+ Ajouter</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Produit</th>
+                                <th>Catégorie</th>
+                                <th>Prix</th>
+                                <th>Stock</th>
+                                <th>Min</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stockTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div id="tab-stats" class="content-section">
+            <div style="margin-bottom: 1rem;">
+                <select class="search-input" style="max-width: 300px;" id="statsPeriod" onchange="renderStats()">
+                    <option value="all">Toutes les périodes</option>
+                    <option value="today">Aujourd'hui</option>
+                    <option value="week">Cette semaine</option>
+                    <option value="month">Ce mois</option>
+                    <option value="year">Cette année</option>
+                </select>
+            </div>
+            
+            <!-- KPIs principaux -->
+            <div class="stats-grid">
+                <div class="stat-card" style="--color-from: #10b981; --color-to: #059669;">
+                    <div class="stat-label">💰 Chiffre d'affaires</div>
+                    <div class="stat-value" id="statRevenue">0 €</div>
+                    <div style="font-size: 0.85rem; opacity: 0.9; margin-top: 0.5rem;" id="statRevenueEvolution"></div>
+                </div>
+                <div class="stat-card" style="--color-from: #3b82f6; --color-to: #1e40af;">
+                    <div class="stat-label">🛒 Nombre de ventes</div>
+                    <div class="stat-value" id="statSales">0</div>
+                    <div style="font-size: 0.85rem; opacity: 0.9; margin-top: 0.5rem;" id="statSalesEvolution"></div>
+                </div>
+                <div class="stat-card" style="--color-from: #8b5cf6; --color-to: #6d28d9;">
+                    <div class="stat-label">📊 Panier moyen</div>
+                    <div class="stat-value" id="statAvg">0 €</div>
+                    <div style="font-size: 0.85rem; opacity: 0.9; margin-top: 0.5rem;" id="statAvgEvolution"></div>
+                </div>
+                <div class="stat-card" style="--color-from: #f59e0b; --color-to: #d97706;">
+                    <div class="stat-label">📦 Articles vendus</div>
+                    <div class="stat-value" id="statTotalItems">0</div>
+                    <div style="font-size: 0.85rem; opacity: 0.9; margin-top: 0.5rem;">articles au total</div>
+                </div>
+            </div>
+
+            <!-- Graphiques et analyses -->
+            <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <!-- Graphique évolution CA -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📈 Évolution du CA</h3>
+                        <select id="chartPeriod" onchange="renderStats()" style="padding: 0.5rem; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'Outfit', sans-serif;">
+                            <option value="7">7 derniers jours</option>
+                            <option value="14" selected>14 derniers jours</option>
+                            <option value="30">30 derniers jours</option>
+                        </select>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="revenueChart" style="max-height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analyses par catégorie et horaires -->
+            <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🏷️ Ventes par catégorie</h3>
+                    </div>
+                    <div class="card-body" id="categoryStats"></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">⏰ Ventes par heure</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="hourlyChart" style="max-height: 250px;"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📅 Ventes par jour de la semaine</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="weekdayChart" style="max-height: 250px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analyses financières pour trésorier -->
+            <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">💼 Rapport trésorerie</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                            <div style="padding: 1rem; background: #f0fdf4; border-radius: 12px; border-left: 4px solid #10b981;">
+                                <div style="font-size: 0.85rem; color: #065f46; margin-bottom: 0.25rem;">CA journalier moyen</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;" id="avgDailyRevenue">0 €</div>
+                            </div>
+                            <div style="padding: 1rem; background: #eff6ff; border-radius: 12px; border-left: 4px solid #3b82f6;">
+                                <div style="font-size: 0.85rem; color: #1e40af; margin-bottom: 0.25rem;">Meilleure journée</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #3b82f6;" id="bestDay">0 €</div>
+                            </div>
+                            <div style="padding: 1rem; background: #fef3c7; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                                <div style="font-size: 0.85rem; color: #92400e; margin-bottom: 0.25rem;">Valeur stock</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #f59e0b;" id="stockValue">0 €</div>
+                            </div>
+                            <div style="padding: 1rem; background: #fae8ff; border-radius: 12px; border-left: 4px solid #a855f7;">
+                                <div style="font-size: 0.85rem; color: #6b21a8; margin-bottom: 0.25rem;">Produit le + rentable</div>
+                                <div style="font-size: 1.25rem; font-weight: 700; color: #a855f7;" id="topProduct">-</div>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 1rem; background: #f8fafc; border-radius: 12px;">
+                            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #0f172a;">📊 Prévisions</h4>
+                            <div style="display: grid; gap: 0.75rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: #64748b;">CA prévisionnel semaine prochaine</span>
+                                    <span style="font-weight: 700; color: #3b82f6;" id="forecastWeek">0 €</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: #64748b;">CA prévisionnel mois prochain</span>
+                                    <span style="font-weight: 700; color: #3b82f6;" id="forecastMonth">0 €</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top produits et ventes récentes -->
+            <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🏆 Classement produits</h3>
+                    </div>
+                    <div class="card-body" id="topProducts"></div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🕒 Historique des ventes</h3>
+                    </div>
+                    <div class="card-body" id="recentSales" style="max-height: 400px; overflow-y: auto;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COURSES -->
+        <div id="tab-courses" class="content-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Liste des courses</h2>
+                </div>
+                <div class="card-body" id="shoppingList"></div>
+            </div>
+        </div>
+    </div>
