@@ -24,31 +24,131 @@ let products = [
 let cart = [];
 let sales = [];
 let editingId = null;
+let autoSaveInterval = null;
+let lastSaveTime = null;
 
-// Persistent storage
+// Persistent storage avec sauvegarde automatique et fallback localStorage
 async function loadData() {
     try {
-        const productsData = await window.storage.get('mdl_products');
-        const salesData = await window.storage.get('mdl_sales');
-        
-        if (productsData) products = JSON.parse(productsData.value);
-        if (salesData) sales = JSON.parse(salesData.value);
+        // Essayer d'abord avec window.storage
+        if (window.storage) {
+            const productsData = await window.storage.get('mdl_products');
+            const salesData = await window.storage.get('mdl_sales');
+            const cartData = await window.storage.get('mdl_cart');
+            
+            if (productsData) products = JSON.parse(productsData.value);
+            if (salesData) sales = JSON.parse(salesData.value);
+            if (cartData) cart = JSON.parse(cartData.value);
+        }
     } catch (error) {
-        console.log('Chargement initial des données par défaut');
+        // Fallback vers localStorage si window.storage n'est pas disponible
+        try {
+            const productsLocal = localStorage.getItem('mdl_products');
+            const salesLocal = localStorage.getItem('mdl_sales');
+            const cartLocal = localStorage.getItem('mdl_cart');
+            
+            if (productsLocal) products = JSON.parse(productsLocal);
+            if (salesLocal) sales = JSON.parse(salesLocal);
+            if (cartLocal) cart = JSON.parse(cartLocal);
+        } catch (localError) {
+            console.log('Chargement initial des données par défaut');
+        }
     }
     
     renderProducts();
     renderCart();
+    updateLastSaveIndicator();
 }
 
 async function save() {
     try {
-        await window.storage.set('mdl_products', JSON.stringify(products));
-        await window.storage.set('mdl_sales', JSON.stringify(sales));
+        // Essayer d'abord avec window.storage
+        if (window.storage) {
+            await window.storage.set('mdl_products', JSON.stringify(products));
+            await window.storage.set('mdl_sales', JSON.stringify(sales));
+            await window.storage.set('mdl_cart', JSON.stringify(cart));
+            lastSaveTime = new Date();
+            updateLastSaveIndicator();
+            return true;
+        }
+    } catch (error) {
+        // Rien faire, on va utiliser localStorage
+    }
+    
+    // Fallback vers localStorage
+    try {
+        localStorage.setItem('mdl_products', JSON.stringify(products));
+        localStorage.setItem('mdl_sales', JSON.stringify(sales));
+        localStorage.setItem('mdl_cart', JSON.stringify(cart));
+        lastSaveTime = new Date();
+        updateLastSaveIndicator();
+        return true;
     } catch (error) {
         console.error('Erreur de sauvegarde:', error);
+        return false;
     }
 }
+
+// Sauvegarde automatique toutes les 30 secondes
+function startAutoSave() {
+    // Sauvegarde toutes les 30 secondes
+    autoSaveInterval = setInterval(async () => {
+        const success = await save();
+        if (success) {
+            console.log('💾 Sauvegarde automatique effectuée');
+        }
+    }, 30000);
+}
+
+// Arrêter la sauvegarde automatique (au cas où)
+function stopAutoSave() {
+    if (autoSaveInterval) {
+        clearInterval(autoSaveInterval);
+        autoSaveInterval = null;
+    }
+}
+
+// Afficher l'indicateur de dernière sauvegarde
+function updateLastSaveIndicator() {
+    const indicator = document.getElementById('lastSaveIndicator');
+    if (!indicator) return;
+    
+    if (!lastSaveTime) {
+        indicator.textContent = '💾 Sauvegarde auto activée';
+        indicator.style.background = 'rgba(16, 185, 129, 0.2)';
+        indicator.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        return;
+    }
+    
+    const now = new Date();
+    const diff = Math.floor((now - lastSaveTime) / 1000); // en secondes
+    
+    let text = '✅ Sauvegardé ';
+    if (diff < 60) {
+        text += 'à l\'instant';
+    } else if (diff < 3600) {
+        text += `il y a ${Math.floor(diff / 60)} min`;
+    } else {
+        text += lastSaveTime.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    }
+    
+    indicator.textContent = text;
+    indicator.style.background = 'rgba(16, 185, 129, 0.2)';
+    indicator.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+}
+
+// Sauvegarder avant de quitter la page
+window.addEventListener('beforeunload', (e) => {
+    save();
+});
+
+// Sauvegarder en cas de visibilité cachée (changement d'onglet, mise en veille)
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        save();
+        console.log('💾 Sauvegarde avant mise en arrière-plan');
+    }
+});
 
 function switchTab(event, tab) {
     document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
@@ -140,6 +240,9 @@ function renderCart() {
     
     const total = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
     document.getElementById('cartTotal').textContent = total.toFixed(2) + ' €';
+    
+    // Sauvegarder automatiquement le panier
+    save();
 }
 
 function updateCart(id, delta) {
@@ -193,6 +296,34 @@ function validateSale() {
     renderProducts();
     
     showNotification('✅ Vente validée avec succès !', 'success');
+}
+
+// NOUVELLE FONCTION : Supprimer une vente
+function deleteSale(saleId) {
+    const sale = sales.find(s => s.id === saleId);
+    if (!sale) return;
+    
+    const confirmMsg = `Voulez-vous vraiment supprimer cette vente ?\n\nDate: ${new Date(sale.date).toLocaleString('fr-FR')}\nMontant: ${sale.total.toFixed(2)} €\n\nLes produits seront remis en stock.`;
+    
+    if (!confirm(confirmMsg)) return;
+    
+    // Remettre les produits en stock
+    sale.items.forEach(item => {
+        const product = products.find(p => p.id === item.id);
+        if (product) {
+            product.stock += item.quantity;
+        }
+    });
+    
+    // Supprimer la vente de l'historique
+    sales = sales.filter(s => s.id !== saleId);
+    
+    // Sauvegarder et rafraîchir
+    save();
+    renderStats();
+    renderProducts();
+    
+    showNotification('🗑️ Vente supprimée et stock restauré', 'success');
 }
 
 function showNotification(message, type = 'success') {
@@ -390,9 +521,11 @@ function renderStats() {
         </div>
     `).join('') : '<div class="empty-state"><div class="empty-emoji">🏆</div><div>Aucune donnée</div></div>';
     
+    // MODIFICATION : Ajout du bouton de suppression dans l'historique
     document.getElementById('recentSales').innerHTML = filtered.slice(0, 20).map(s => `
-        <div style="padding: 1rem; background: #f8fafc; border-radius: 12px; margin-bottom: 0.75rem;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+        <div style="padding: 1rem; background: #f8fafc; border-radius: 12px; margin-bottom: 0.75rem; position: relative;">
+            <button onclick="deleteSale(${s.id})" style="position: absolute; top: 0.5rem; right: 0.5rem; background: #ef4444; color: white; border: none; border-radius: 8px; padding: 0.4rem 0.6rem; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">🗑️ Suppr.</button>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; padding-right: 80px;">
                 <span style="font-size: 0.8rem; color: #64748b;">${new Date(s.date).toLocaleString('fr-FR', {dateStyle: 'short', timeStyle: 'short'})}</span>
                 <span style="font-weight: 700; color: #10b981; font-size: 0.9rem;">${s.total.toFixed(2)} €</span>
             </div>
@@ -801,16 +934,27 @@ function renderCourses() {
     }
 }
 
-function exportData() {
+async function exportData() {
     const data = { products, sales, exportDate: new Date().toISOString() };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `mdl-backup-${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    showNotification('💾 Données exportées avec succès !', 'success');
+    
+    try {
+        // Ouvre une fenêtre pour choisir où enregistrer
+        const handle = await window.showSaveFilePicker({
+            suggestedName: `mdl-backup-${new Date().toISOString().split('T')[0]}.json`,
+            types: [{
+                description: 'JSON File',
+                accept: {'application/json': ['.json']},
+            }],
+        });
+
+        const writable = await handle.createWritable();
+        await writable.write(JSON.stringify(data, null, 2));
+        await writable.close();
+
+        showNotification('💾 Données sauvegardées dans votre dossier !', 'success');
+    } catch (err) {
+        showNotification('❌ Sauvegarde annulée', 'error');
+    }
 }
 
 function importData() {
@@ -854,4 +998,8 @@ function toggleFullscreen() {
 
 window.addEventListener('DOMContentLoaded', () => {
     loadData();
+    startAutoSave();
+    
+    // Mettre à jour l'indicateur toutes les 10 secondes
+    setInterval(updateLastSaveIndicator, 10000);
 });

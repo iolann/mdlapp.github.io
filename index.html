@@ -12,9 +12,6 @@
     
     <link rel="stylesheet" href="style.css">
     <script src="data.js"></script>
-    
-    <style>
-        </style>
 </head>
 <body>
     <header>
@@ -30,6 +27,20 @@
                 </div>
             </div>
             <div class="header-buttons">
+                <div id="lastSaveIndicator" style="
+                    background: rgba(255,255,255,0.2);
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(255,255,255,0.3);
+                    color: white;
+                    padding: 0.7rem 1.2rem;
+                    border-radius: 12px;
+                    font-weight: 600;
+                    font-size: 0.85rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                ">💾 Sauvegarde auto activée</div>
                 <button class="export-btn" onclick="exportData()">💾</button>
                 <button class="export-btn" onclick="importData()">📂</button>
                 <button class="export-btn" onclick="toggleFullscreen()">⛶</button>
@@ -263,3 +274,5 @@
             </div>
         </div>
     </div>
+</body>
+</html>
