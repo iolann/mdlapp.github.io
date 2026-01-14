@@ -12,6 +12,52 @@
     
     <link rel="stylesheet" href="style.css">
     <script src="data.js"></script>
+    
+    <!-- Firebase Integration -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+        
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBiT-RfkaPF5W-lDWfB54gRktncdcO4CAA",
+            authDomain: "gestion-mdl.firebaseapp.com",
+            projectId: "gestion-mdl",
+            storageBucket: "gestion-mdl.firebasestorage.app",
+            messagingSenderId: "665941438924",
+            appId: "1:665941438924:web:6564b119544b3bf129ed69"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        // Make Firebase accessible globally
+        window.firebaseApp = app;
+        window.firebaseDB = db;
+        window.firebaseUtils = {
+            collection,
+            addDoc,
+            getDocs,
+            updateDoc,
+            deleteDoc,
+            doc,
+            onSnapshot
+        };
+        
+        // Update save indicator
+        document.addEventListener('DOMContentLoaded', () => {
+            const indicator = document.getElementById('lastSaveIndicator');
+            if (indicator) {
+                indicator.innerHTML = '☁️ Synchronisation Firebase active';
+                indicator.style.background = 'rgba(16, 185, 129, 0.2)';
+                indicator.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+            }
+        });
+        
+        console.log('🔥 Firebase initialisé avec succès!');
+    </script>
 </head>
 <body>
     <header>
